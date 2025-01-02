@@ -1,30 +1,35 @@
 FROM php:8.4-fpm-alpine
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 RUN apk add --no-cache \
     bash \
     nginx \
     supervisor \
     libpng-dev \
+    libzip-dev \
     libjpeg-turbo-dev \
     freetype-dev \
+    oniguruma-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql mbstring zip bcmath
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 复制 Laravel 项目文件
 COPY . .
 
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
+COPY .env.example .env
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 
-COPY ./supervisord.conf /etc/supervisord.conf
+COPY ./docker/supervisord.conf /etc/supervisord.conf
 
 RUN composer install --no-dev --optimize-autoloader
+
+RUN mkdir -p /var/www/html/storage
+
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage
 
 RUN php artisan key:generate
 

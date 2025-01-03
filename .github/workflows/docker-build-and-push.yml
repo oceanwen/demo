@@ -22,6 +22,11 @@ jobs:
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: false
+          registry-type: private
+          skip-logout: false
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Build and push Docker image
         id: build-and-push

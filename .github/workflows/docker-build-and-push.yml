@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - main
-    types: [closed]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2

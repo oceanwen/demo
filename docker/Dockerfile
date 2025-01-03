@@ -29,7 +29,7 @@ RUN composer install --no-dev --optimize-autoloader
 RUN mkdir -p /var/www/html/storage
 
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
+    && chmod -R 777 /var/www/html/storage
 
 RUN php artisan key:generate
 

@@ -18,7 +18,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-COPY .env.example .env
+#COPY .env.example .env
 
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 
@@ -26,12 +26,12 @@ COPY ./docker/supervisord.conf /etc/supervisord.conf
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN mkdir -p /var/www/html/storage
+#RUN mkdir storage && chmod -R 777 storage
 
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 777 /var/www/html/storage
+#RUN chown -R www-data:www-data /var/www/html \
+#    && chmod -R 777 /var/www/html/storage
 
-RUN php artisan key:generate
+#RUN php artisan key:generate
 
 EXPOSE 80
 

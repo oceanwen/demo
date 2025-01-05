@@ -127,6 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'request' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/request.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('LOG_DAILY_DAYS', 14),
+            'formatter' => \Monolog\Formatter\JsonFormatter::class,
+        ],
     ],
 
 ];

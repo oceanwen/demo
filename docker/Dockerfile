@@ -26,12 +26,9 @@ COPY ./docker/supervisord.conf /etc/supervisord.conf
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chmod -R 777 bootstrap/cache
-
-#RUN mkdir storage && chmod -R 777 storage
-
-#RUN chown -R www-data:www-data /var/www/html \
-#    && chmod -R 777 /var/www/html/storage
+RUN mkdir -p storage/framework/{sessions,views,cache} \
+    && chmod -R 777 bootstrap/cache \
+    && chmod -R 777 storage
 
 #RUN php artisan key:generate
 

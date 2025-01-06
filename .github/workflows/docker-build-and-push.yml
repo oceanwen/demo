@@ -48,3 +48,10 @@ jobs:
 
       - name: Logout from Amazon ECR
         run: docker logout ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      # - name: Deploy to ECS
+      #   run: |
+      #     aws ecs update-service \
+      #       --cluster DevCluster \
+      #       --service laravel-web-demo \
+      #       --force-new-deployment

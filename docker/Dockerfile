@@ -29,7 +29,7 @@ RUN composer install --no-dev --optimize-autoloader
 RUN mkdir -p storage/framework/sessions \
     && mkdir -p storage/framework/views \
     && mkdir -p storage/framework/cache \
-    && chmod -R 755 storage bootstrap/cache
+    && chmod -R 777 storage bootstrap/cache
 
 #RUN php artisan key:generate
 

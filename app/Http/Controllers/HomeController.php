@@ -6,6 +6,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        var_dump($_SERVER['REMOTE_ADDR']);exit;
+        dump($_SERVER['REMOTE_ADDR']);exit;
     }
 }

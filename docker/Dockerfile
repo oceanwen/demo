@@ -1,18 +1,11 @@
-FROM php:8.4-fpm-alpine
+FROM oceanwen/php:8.4
 
 WORKDIR /var/www/html
 
 RUN apk add --no-cache \
     bash \
     nginx \
-    supervisor \
-    libpng-dev \
-    libzip-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    oniguruma-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql mbstring zip bcmath
+    supervisor
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -23,6 +16,10 @@ COPY . .
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 
 COPY ./docker/supervisord.conf /etc/supervisord.conf
+
+COPY ./docker/custom-php.ini /usr/local/etc/php/conf.d/
+
+COPY ./docker/custom-php-fpm.conf /usr/local/etc/php-fpm.d/
 
 RUN composer install --no-dev --optimize-autoloader
 

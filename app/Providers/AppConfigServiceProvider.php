@@ -48,7 +48,7 @@ class AppConfigServiceProvider extends ServiceProvider
         $content = $contentStream->getContents();
         $configData = json_decode($content, true);
 
-        dump($configData);
+        //dump($configData);
         if (!empty($configData)) {
             Config::set('database.connections.mysql.host', $configData['host']);
             Config::set('database.connections.mysql.database', $configData['dbname']);

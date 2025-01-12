@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Aws\SecretsManager\SecretsManagerClient;
 use Aws\AppConfig\AppConfigClient;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 
 class AppConfigServiceProvider extends ServiceProvider
 {
@@ -22,28 +22,15 @@ class AppConfigServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $client = new SecretsManagerClient([
-            'version' => 'latest',
-            'region' => 'ap-northeast-1',
-        ]);
+        $k = Crypt::decrypt(env('ENCRYPT_KEY'));
+        $sk = Crypt::decrypt(env('ENCRYPT_SECRET_KEY'));
 
-        $secretName = 'aksk';
-        $result = $client->getSecretValue([
-            'SecretId' => $secretName,
-        ]);
-
-        $secret = json_decode($result['SecretString'], true);
-        $awsAccessKeyId = $secret['AWS_ACCESS_KEY_ID'];
-        $awsSecretAccessKey = $secret['AWS_SECRET_ACCESS_KEY'];
-
-        dump($awsAccessKeyId,$awsSecretAccessKey);
-        
         $appConfig = new AppConfigClient([
             'version' => 'latest',
             'region' => 'ap-northeast-1',
             'credentials' => [
-                'key'    => $awsAccessKeyId,
-                'secret' => $awsSecretAccessKey,
+                'key'    => $k,
+                'secret' => $sk,
             ]
         ]);
 
